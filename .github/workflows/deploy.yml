@@ -64,19 +64,8 @@ jobs:
             --group-id "${{ secrets.AWS_SECURITY_GROUP_ID }}" \
             --ip-permissions "IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges=[{CidrIp=${{ steps.detect_ip.outputs.ip }}/32,Description=${DESC}}]"
 
-          RULE_ID=$(aws ec2 describe-security-group-rules \
-            --filters "Name=group-id,Values=${{ secrets.AWS_SECURITY_GROUP_ID }}" \
-                      "Name=description,Values=${DESC}" \
-            --query 'SecurityGroupRules[0].SecurityGroupRuleId' \
-            --output text)
-
-          if [ -z "${RULE_ID}" ] || [ "${RULE_ID}" = "None" ]; then
-            echo "Failed to resolve temporary security group rule id." >&2
-            exit 1
-          fi
-
-          echo "rule_id=${RULE_ID}" >> "$GITHUB_OUTPUT"
-          echo "Temporary rule id: ${RULE_ID}"
+          echo "opened_cidr=${{ steps.detect_ip.outputs.ip }}/32" >> "$GITHUB_OUTPUT"
+          echo "Temporary ingress opened for ${{ steps.detect_ip.outputs.ip }}/32"
 
       - name: Prepare SSH key
         shell: bash
@@ -119,7 +108,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ -n "${{ steps.open_sg.outputs.rule_id }}" ]; then
+          if [ -n "${{ steps.open_sg.outputs.opened_cidr }}" ]; then
             aws ec2 revoke-security-group-ingress \
-              --security-group-rule-ids "${{ steps.open_sg.outputs.rule_id }}"
+              --group-id "${{ secrets.AWS_SECURITY_GROUP_ID }}" \
+              --protocol tcp \
+              --port 22 \
+              --cidr "${{ steps.open_sg.outputs.opened_cidr }}"
           fi
