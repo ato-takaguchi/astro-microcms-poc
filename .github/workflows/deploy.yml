@@ -5,9 +5,16 @@ on:
   repository_dispatch:
     types: [microcms_update]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-northeast-1
 
     steps:
       - name: Checkout
@@ -20,7 +27,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build static site
         run: npm run build
@@ -29,13 +36,90 @@ jobs:
           MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
           MICROCMS_ENDPOINT: ${{ secrets.MICROCMS_ENDPOINT }}
 
-      - name: Copy files to EC2
-        uses: appleboy/scp-action@v0.1.7
+      - name: Configure AWS credentials by OIDC
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          port: ${{ secrets.EC2_PORT || 22 }}
-          source: "dist/*"
-          target: ${{ secrets.EC2_DEPLOY_PATH }}
-          strip_components: 1
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: github-actions-ec2-deploy
+
+      - name: Detect runner public IP
+        id: detect_ip
+        shell: bash
+        run: |
+          set -euo pipefail
+          IP=$(curl -fsSL https://checkip.amazonaws.com | tr -d '\n')
+          echo "ip=${IP}" >> "$GITHUB_OUTPUT"
+          echo "Detected runner IP: ${IP}"
+
+      - name: Open SSH in security group temporarily
+        id: open_sg
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DESC="gha-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+          aws ec2 authorize-security-group-ingress \
+            --group-id "${{ secrets.AWS_SECURITY_GROUP_ID }}" \
+            --ip-permissions "IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges=[{CidrIp=${{ steps.detect_ip.outputs.ip }}/32,Description=${DESC}}]"
+
+          RULE_ID=$(aws ec2 describe-security-group-rules \
+            --filters "Name=group-id,Values=${{ secrets.AWS_SECURITY_GROUP_ID }}" \
+                      "Name=description,Values=${DESC}" \
+            --query 'SecurityGroupRules[0].SecurityGroupRuleId' \
+            --output text)
+
+          if [ -z "${RULE_ID}" ] || [ "${RULE_ID}" = "None" ]; then
+            echo "Failed to resolve temporary security group rule id." >&2
+            exit 1
+          fi
+
+          echo "rule_id=${RULE_ID}" >> "$GITHUB_OUTPUT"
+          echo "Temporary rule id: ${RULE_ID}"
+
+      - name: Prepare SSH key
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          printf '%s\n' "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          if [ -n "${{ secrets.EC2_KNOWN_HOSTS }}" ]; then
+            printf '%s\n' "${{ secrets.EC2_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+          fi
+
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Ensure deploy directory exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_rsa -p "${{ secrets.EC2_PORT }}" \
+            "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" \
+            "mkdir -p '${{ secrets.EC2_DEPLOY_PATH }}'"
+
+      - name: Upload dist to EC2
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/id_rsa -p ${{ secrets.EC2_PORT }}" \
+            dist/ \
+            "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.EC2_DEPLOY_PATH }}/"
+
+      - name: Close SSH in security group
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -n "${{ steps.open_sg.outputs.rule_id }}" ]; then
+            aws ec2 revoke-security-group-ingress \
+              --security-group-rule-ids "${{ steps.open_sg.outputs.rule_id }}"
+          fi
