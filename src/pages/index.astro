@@ -1,93 +1,35 @@
 ---
-const serviceDomain = import.meta.env.MICROCMS_SERVICE_DOMAIN;
-const apiKey = import.meta.env.MICROCMS_API_KEY;
-const endpointName = import.meta.env.MICROCMS_ENDPOINT || 'news';
+import { getAllContents, normalizeCaseItem } from '../lib/microcms.js';
 
-let title = 'POCページ';
-let bodyHtml = '<p>microCMS から本文を取得できませんでした。</p>';
-let updatedAt = '';
+let items = [];
 let errorMessage = '';
 
-if (!serviceDomain || !apiKey) {
-  errorMessage = '環境変数 MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY が未設定です。';
-} else {
-  const endpoint = `https://${serviceDomain}.microcms.io/api/v1/${endpointName}`;
-
-  try {
-    const res = await fetch(`${endpoint}?limit=1&orders=-publishedAt`, {
-      headers: {
-        'X-MICROCMS-API-KEY': apiKey
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error(`microCMS API error: ${res.status} ${res.statusText}`);
-    }
-
-    const data = await res.json();
-    const item = data.contents?.[0];
-
-    if (item) {
-      title = item.title || title;
-      bodyHtml = item.body || '<p>本文なし</p>';
-      updatedAt = item.updatedAt || '';
-    } else {
-      bodyHtml = '<p>記事が 0 件でした。</p>';
-    }
-  } catch (error) {
-    errorMessage = error instanceof Error ? error.message : String(error);
-  }
+try {
+  const contents = await getAllContents();
+  items = contents.map(normalizeCaseItem).filter((item) => item.id);
+} catch (error) {
+  errorMessage = error instanceof Error ? error.message : String(error);
 }
 ---
-
 <!doctype html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
-    <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        line-height: 1.7;
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 0 16px;
-        color: #222;
-      }
-      h1 {
-        margin-bottom: 8px;
-      }
-      .meta {
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 24px;
-      }
-      .error {
-        background: #fff3f3;
-        border: 1px solid #f0b8b8;
-        padding: 16px;
-        border-radius: 8px;
-        margin-bottom: 24px;
-      }
-      .content {
-        border-top: 1px solid #ddd;
-        padding-top: 24px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>{title}</h1>
-
-    {updatedAt && <p class="meta">最終更新: {new Date(updatedAt).toLocaleString('ja-JP')}</p>}
-
-    {errorMessage && (
-      <div class="error">
-        <strong>取得エラー</strong>
-        <div>{errorMessage}</div>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>microCMS POC</title>
+</head>
+<body>
+  <main>
+    <h1>microCMS POC</h1>
+    {errorMessage ? (
+      <p>{errorMessage}</p>
+    ) : (
+      <ul>
+        {items.map((item) => (
+          <li><a href={`/cases/elevator/gallery/${item.id}.html`}>{item.title}</a></li>
+        ))}
+      </ul>
     )}
-
-    <div class="content" set:html={bodyHtml} />
-  </body>
+  </main>
+</body>
 </html>

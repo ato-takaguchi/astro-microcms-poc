@@ -1,0 +1,230 @@
+---
+const ASSET_BASE = 'https://www.mebs.co.jp';
+
+export async function getStaticPaths() {
+  const serviceDomain = import.meta.env.MICROCMS_SERVICE_DOMAIN;
+  const apiKey = import.meta.env.MICROCMS_API_KEY;
+  const endpoint = import.meta.env.MICROCMS_ENDPOINT || 'case-gallery';
+
+  if (!serviceDomain || !apiKey) {
+    throw new Error('MICROCMS_SERVICE_DOMAIN または MICROCMS_API_KEY が未設定です。');
+  }
+
+  const url = `https://${serviceDomain}.microcms.io/api/v1/${endpoint}`;
+  const res = await fetch(url, {
+    headers: {
+      'X-MICROCMS-API-KEY': apiKey,
+    },
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`microCMS API error: ${res.status} ${res.statusText} ${text}`);
+  }
+
+  const data = await res.json();
+
+  return data.contents.map((item) => ({
+    params: { id: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+
+function absolutize(html = '') {
+  return html
+    .replace(/src="\/(?!\/)/g, `src="${ASSET_BASE}/`)
+    .replace(/href="\/(?!\/)/g, `href="${ASSET_BASE}/`)
+    .replace(/src='\/(?!\/)/g, `src='${ASSET_BASE}/`)
+    .replace(/href='\/(?!\/)/g, `href='${ASSET_BASE}/`);
+}
+
+const body = absolutize(item.body ?? '');
+const pageTitle = item.title ?? '導入事例';
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title>
+  <link rel="stylesheet" href={`${ASSET_BASE}/assets/css/style.css?2025030801`} type="text/css" />
+</head>
+
+<body>
+  <div id="wrapper" class="g-wrapper">
+    <header class="g-header" role="banner">
+      <div class="g-header_inner">
+        <a class="g-headerLogo_link" href={`${ASSET_BASE}/`}>
+          <span class="g-headerLogo_img g-headerLogo_img-pc">
+            <img
+              src={`${ASSET_BASE}/assets/img/logo.svg`}
+              alt="Mitsubishi Electric | 三菱電機ビルソリューションズ株式会社"
+              width="345"
+              height="45"
+            />
+          </span>
+          <span class="g-headerLogo_img g-headerLogo_img-sp">
+            <img
+              src={`${ASSET_BASE}/assets/img/logo_sp.svg`}
+              alt="Mitsubishi Electric | 三菱電機ビルソリューションズ株式会社"
+              width="345"
+              height="45"
+            />
+          </span>
+        </a>
+      </div>
+    </header>
+
+    <div class="c-breadcrumb">
+      <div class="c-breadcrumb_inner">
+        <ul class="c-breadcrumb_list">
+          <li class="c-breadcrumb_listItem">
+            <div class="c-breadcrumb_listItemInner">
+              <a class="c-breadcrumb_listLink" href={`${ASSET_BASE}/`}>トップページ</a>
+            </div>
+          </li>
+          <li class="c-breadcrumb_listItem">
+            <div class="c-breadcrumb_listItemInner">
+              <a class="c-breadcrumb_listLink" href={`${ASSET_BASE}/cases/`}>導入事例</a>
+            </div>
+          </li>
+          <li class="c-breadcrumb_listItem">
+            <div class="c-breadcrumb_listItemInner">
+              <span class="c-breadcrumb_listText">{pageTitle}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="l-globalContainer">
+      <main class="g-pageMain" role="main">
+        <div class="c-titleHeadingCases c-titleHeadingCases-gallery">
+          <div class="c-titleHeadingCases_inner">
+            <div class="c-titleHeadingCases_block">
+              <div class="c-titleHeadingCases_category">
+                <ul class="c-list-tag">
+                  <li class="c-list-tag_item">
+                    <div class="c-tag">
+                      <span class="c-tag_text c-tag_text-fsSmall">ギャラリー</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <h1 class="c-titleHeadingCases_main">{pageTitle}</h1>
+            </div>
+          </div>
+        </div>
+
+        <div set:html={body}></div>
+
+        <div class="c-cvColumn">
+          <section class="c-cvColumn_item c-cvColumn_item-catalog">
+            <div class="c-cvColumn_itemInner">
+              <h2 class="c-cvColumn_itemTitle">資料ダウンロード</h2>
+              <div class="c-cvColumn_itemText">
+                <p class="u-flex-wrap u-flex-wrap-center">
+                  <span class="u-flex-wrap_block">製品・ソリューションに関する資料や</span>
+                  <span class="u-flex-wrap_block">製品カタログのダウンロードはこちらから</span>
+                </p>
+              </div>
+              <div class="c-cvColumn_itemButton">
+                <a class="c-btn c-btn-width320 c-btn-large c-btn-secondary" href={`${ASSET_BASE}/catalog/`}>
+                  <span class="c-btn_text">資料ダウンロード</span>
+                  <span class="c-btn_arrow material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <section class="c-cvColumn_item">
+            <div class="c-cvColumn_itemInner">
+              <h2 class="c-cvColumn_itemTitle">お問い合わせ</h2>
+              <div class="c-cvColumn_itemText">
+                <p class="u-flex-wrap u-flex-wrap-center">
+                  <span class="u-flex-wrap_block">製品・ソリューションの導入に関する</span>
+                  <span class="u-flex-wrap_block">ご質問・ご相談はこちらから</span>
+                </p>
+              </div>
+              <div class="c-cvColumn_itemButton">
+                <a class="c-btn c-btn-width320 c-btn-large c-btn-cv" href={`${ASSET_BASE}/contact/form_products_solutions.html`}>
+                  <span class="c-btn_text">お問い合わせ</span>
+                  <span class="c-btn_arrow material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="l-section l-section-relation u-bg-grey100">
+          <div class="l-container">
+            <h2 class="c-headingLv1 c-headingLv1-mt0">お役立ち情報</h2>
+            <div class="l-twoColumn c-miscCard02">
+              <a class="l-twoColumn_item l-twoColumn_item-spMtWide c-miscCard02_link" href={`${ASSET_BASE}/useful/`}>
+                <div class="c-miscCard02_linkImage">
+                  <figure class="c-miscCard02_linkImageSrc">
+                    <img src={`${ASSET_BASE}/assets/img/common/relation_useful.jpg`} alt="画像" width="567" height="284" />
+                  </figure>
+                </div>
+                <div class="c-miscCard02_linkContents">
+                  <div class="c-miscCard02_linkContentsInner">
+                    <h3 class="c-miscCard02_linkTitle u-flex-wrap">
+                      <span class="u-flex-wrap_block">ビルソリューション</span>
+                      <span class="u-flex-wrap_block">ジャーナル</span>
+                    </h3>
+                    <div class="c-miscCard02_linkText">
+                      <p>ビルに関わるすべての方に、意外と知らない「ビル」に関する情報を記事としてお届けします。</p>
+                    </div>
+                  </div>
+                  <div class="c-miscCard02_linkArrow">
+                    <span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
+                  </div>
+                </div>
+              </a>
+
+              <a class="l-twoColumn_item l-twoColumn_item-spMtWide c-miscCard02_link" href={`${ASSET_BASE}/seminars/`}>
+                <div class="c-miscCard02_linkImage">
+                  <figure class="c-miscCard02_linkImageSrc">
+                    <img src={`${ASSET_BASE}/assets/img/common/relation_seminars.jpg`} alt="画像" width="567" height="284" />
+                  </figure>
+                </div>
+                <div class="c-miscCard02_linkContents">
+                  <div class="c-miscCard02_linkContentsInner">
+                    <h3 class="c-miscCard02_linkTitle u-flex-wrap">
+                      <span class="u-flex-wrap_block">セミナー・イベント</span>
+                    </h3>
+                    <div class="c-miscCard02_linkText">
+                      <p>ビル設備や製品・ソリューションに関連した各種テーマのセミナー・イベントをご案内します。</p>
+                    </div>
+                  </div>
+                  <div class="c-miscCard02_linkArrow">
+                    <span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="g-footer" role="contentinfo">
+      <div class="g-footer_separator">
+        <div class="g-footer_inner">
+          <div class="g-footer_copyright">
+            <small class="g-footer_copyrightText">&copy; MITSUBISHI ELECTRIC BUILDING SOLUTIONS CORPORATION</small>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script is:inline src={`${ASSET_BASE}/assets/js/nav.js`}></script>
+  <script is:inline src={`${ASSET_BASE}/assets/js/main.js`}></script>
+  <script is:inline src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+  <script is:inline src={`${ASSET_BASE}/assets/js/cases/isotope.js`}></script>
+</body>
+</html>
