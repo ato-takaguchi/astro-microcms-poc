@@ -1,46 +1,18 @@
 ---
-import { getContentById, getAllContents, normalizeCaseItem } from '../../../../lib/microcms.js';
+import { getAllContents, normalizeCaseItem } from '../../lib/microcms.js';
 
-export async function getStaticPaths() {
-  const contents = await getAllContents();
-  return contents.map((item) => ({ params: { id: item.id } }));
-}
 
 const ASSET_BASE = 'https://www.mebs.co.jp';
 
-function absolutize(html = '') {
-  return html
-    .replace(/src="\/(?!\/)/g, `src="${ASSET_BASE}/`)
-    .replace(/href="\/(?!\/)/g, `href="${ASSET_BASE}/`)
-    .replace(/src='\/(?!\/)/g, `src='${ASSET_BASE}/`)
-    .replace(/href='\/(?!\/)/g, `href='${ASSET_BASE}/`);
+let items = [];
+let errorMessage = '';
+
+try {
+  const contents = await getAllContents();
+  items = contents.map(normalizeCaseItem).filter((item) => item.id);
+} catch (error) {
+  errorMessage = error instanceof Error ? error.message : String(error);
 }
-
-const { id } = Astro.params;
-const rawItem = await getContentById(id);
-const page = rawItem ? normalizeCaseItem(rawItem) : null;
-
-if (!page) {
-  Astro.response.status = 404;
-}
-
-const allTags = [
-  ...(page?.productTags ?? []),
-  ...(page?.buildingTags ?? []),
-  ...(page?.serviceTags ?? []),
-];
-
-const overviewBody = absolutize(page?.overviewBody ?? '');
-const galleryBody = absolutize(page?.galleryBody ?? '');
-const hasOverview = !!(page?.overviewBody || page?.overviewImage);
-const hasGallery = (page?.gallery?.length ?? 0) > 0;
-const hasSpecs = (page?.specs?.length ?? 0) > 0;
-
-const allContents = await getAllContents();
-const relatedItems = allContents
-  .filter((item) => item.id !== id)
-  .slice(0, 3)
-  .map(normalizeCaseItem);
 ---
 
 <!doctype html>
@@ -48,9 +20,7 @@ const relatedItems = allContents
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{page?.metaTitle ?? '導入事例が見つかりません'}</title>
-  {page && <meta name="description" content={page.description} />}
-  {page && <link rel="canonical" href={page.canonicalUrl} />}
+  <title>導入事例 | 三菱電機ビルソリューションズ</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" />
   <link rel="stylesheet" href={`${ASSET_BASE}/assets/css/style.css?2025030801`} type="text/css" />
 </head>
@@ -61,11 +31,9 @@ const relatedItems = allContents
     <header class="g-header" role="banner" data-js-hamburger="" data-js-header="">
 <div class="g-header_fog" data-js-hamburger-overlay=""></div>
 <div class="g-header_main" data-js-dropdown="">
-<!-- ロゴ+グローバルリンク+サイト内検索：PC 開始 .g-headerLogoGlobalSearch -->
 <div class="g-headerLogoGlobalSearch">
 <div class="g-header_inner">
 <div class="g-headerLogoGlobalSearch_inner">
-<!-- ロゴ 開始 .g-headerLogo -->
 <div class="g-headerLogo">
 <a class="g-headerLogo_link" href="https://www.mebs.co.jp/">
 <span class="g-headerLogo_img g-headerLogo_img-pc">
@@ -76,8 +44,6 @@ const relatedItems = allContents
 </span>
 </a>
 </div>
-<!-- ロゴ 終了 /.g-headerLogo -->
-<!-- グローバルリンク+サイト内検索：PC 開始 .g-headerGlobalSearch -->
 <div class="g-headerGlobalSearch">
 <div class="g-headerGlobalSearch_inner">
 <div class="g-headerGlobal">
@@ -111,15 +77,11 @@ const relatedItems = allContents
 </div>
 </div>
 </div>
-<!-- グローバルリンク+サイト内検索：PC 終了 /.g-headerGlobalSearch -->
 </div>
 </div>
 </div>
-<!-- ロゴ+グローバルリンク+サイト内検索：PC 終了 /.g-headerLogoGlobalSearch -->
-<!-- ナビラッパー 開始 .g-headerNavWrapper -->
 <div class="g-headerNavWrapper" data-js-hamburger-content="" aria-hidden="false">
 <div class="g-headerNavWrapper_inner">
-<!-- サイト内検索：SP 開始 .g-headerSearch-sp -->
 <div class="g-headerSearch g-headerSearch-sp">
 <div class="g-headerSearch_inner">
 <div class="c-searchBox">
@@ -132,8 +94,6 @@ const relatedItems = allContents
 </div>
 </div>
 </div>
-<!-- サイト内検索：SP 終了 /.g-headerSearch-sp -->
-<!-- サブナビ 開始 .g-headerSubNav -->
 <div class="g-headerSubNav">
 <div class="g-header_inner">
 <div class="g-headerSubNav_inner">
@@ -166,8 +126,6 @@ const relatedItems = allContents
 </div>
 </div>
 </div>
-<!-- サブナビ 終了 /.g-headerSubNav -->
-<!-- グローバルナビ 開始 .g-headerMenu -->
 <div class="g-headerMenu">
 <div class="g-headerMenu_inner g-header_inner">
 <div class="g-headerMenu_root">
@@ -397,344 +355,92 @@ const relatedItems = allContents
 </div>
 </div>
 </div>
-<!-- グローバルナビ 終了 /.g-headerMenu -->
 </div>
 </div>
-<!-- ナビラッパー 終了 /.g-headerNavWrapper -->
 </div>
 </header>
 
-    {page ? (
-      <>
-        <div class="c-breadcrumb">
-          <div class="c-breadcrumb_inner">
-            <ul class="c-breadcrumb_list">
-              <li class="c-breadcrumb_listItem">
-                <div class="c-breadcrumb_listItemInner">
-                  <a class="c-breadcrumb_listLink" href={`${ASSET_BASE}/`}>トップページ</a>
-                </div>
-              </li>
-              <li class="c-breadcrumb_listItem">
-                <div class="c-breadcrumb_listItemInner">
-                  <a class="c-breadcrumb_listLink" href={`${ASSET_BASE}/cases/`}>導入事例</a>
-                </div>
-              </li>
-              <li class="c-breadcrumb_listItem">
-                <div class="c-breadcrumb_listItemInner">
-                  <span class="c-breadcrumb_listText">{page.title}</span>
-                </div>
-              </li>
-            </ul>
+    <div class="c-breadcrumb">
+      <div class="c-breadcrumb_inner">
+        <ul class="c-breadcrumb_list">
+          <li class="c-breadcrumb_listItem">
+            <div class="c-breadcrumb_listItemInner">
+              <a class="c-breadcrumb_listLink" href={`${ASSET_BASE}/`}>トップページ</a>
+            </div>
+          </li>
+          <li class="c-breadcrumb_listItem">
+            <div class="c-breadcrumb_listItemInner">
+              <span class="c-breadcrumb_listText">導入事例</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="l-globalContainer">
+      <main class="g-pageMain" role="main">
+
+        <div class="c-titleHeadingCases">
+          <div class="c-titleHeadingCases_inner">
+            <div class="c-titleHeadingCases_spBg">
+              <div class="c-titleHeadingCases_block">
+                <h1 class="c-titleHeadingCases_main">導入事例</h1>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="l-globalContainer">
-          <main class="g-pageMain" role="main">
-
-            {/* 1. ページタイトルエリア */}
-            <div class="c-titleHeadingCases c-titleHeadingCases-gallery">
-              <div class="c-titleHeadingCases_inner">
-                <div class="c-titleHeadingCases_block">
-                  <div class="c-titleHeadingCases_category">
-                    <ul class="c-list-tag">
-                      <li class="c-list-tag_item">
-                        <div class="c-tag">
-                          <span class="c-tag_text c-tag_text-fsSmall">ギャラリー</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <h1 class="c-titleHeadingCases_main">{page.title}</h1>
-                  {page.companyName && (
-                    <p class="c-titleHeadingCases_company">{page.companyName} 様</p>
-                  )}
-                  {allTags.length > 0 && (
-                    <ul class="c-tag-slash">
-                      {allTags.map((tag) => (
-                        <li class="c-tag-slash_item">
-                          <a class="c-tag-slash_link" href="#">{tag}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
+        {errorMessage ? (
+          <section class="l-section">
+            <div class="l-container">
+              <p>{errorMessage}</p>
             </div>
-
-            <div class="u-bg-black02 u-pb-1">
-
-              {/* 2. メインビジュアル */}
-              {page.mainVisual && (
-                <div class="c-casesGalleryKeyvisual">
-                  <div class="c-casesGalleryKeyvisual_image">
-                    <img
-                      src={page.mainVisual}
-                      alt={page.mainVisualAlt}
-                      width="1440"
-                      height="695"
-                    />
-                  </div>
-                  {page.mainVisualCaption && (
-                    <div class="c-casesGalleryKeyvisual_information">
-                      <div class="l-container">
-                        <p class="c-casesGalleryKeyvisual_caption">{page.mainVisualCaption}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* 3. 施設概要セクション */}
-              {hasOverview && (
-                <div class="l-section-editarea">
-                  <div class="l-container">
-                    <div class="c-editarea">
-                      <h2 class="c-headingLv1">施設概要</h2>
-                      <div class="c-imageText">
-                        {page.overviewImage && (
-                          <div class="c-imageText_image">
-                            <figure class="c-imageText_imageInner">
-                              <img src={page.overviewImage} alt={page.overviewImageAlt} width="182" height="182" />
-                            </figure>
-                          </div>
-                        )}
-                        {page.overviewBody && (
-                          <div class="c-imageText_contents">
-                            <div class="c-imageText_contentsInner" set:html={overviewBody} />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* 4. ギャラリーカルーセルセクション */}
-              {hasGallery && (
-                <section class="c-casesCarousel u-bg-black">
-                  <div class="l-container">
-                    <h2 class="c-headingLv1 c-headingLv1-mt0">ギャラリー</h2>
-                    <div class="c-casesCarousel_main">
-                      <div data-js-sync-slide>
-                        <div class="c-carousel c-carousel-gallery" data-js-sync-slide-vi="slide_for">
-                          <div class="c-carousel_body" data-js-vi_body>
-                            <ul class="c-carousel_main" data-js-vi_main>
-                              {page.gallery.map((item) => (
-                                <li class="c-carousel_item" aria-hidden="false">
-                                  <div class="c-carousel_itemInner">
-                                    <figure class="c-visual-fit">
-                                      <div class="c-visual-fit_image c-visual-fit_image-carouselGgallery">
-                                        <img class="c-visual-fit_imageSrc c-visual-fit_imageSrc-carouselGgallery" src={item.image} alt={item.imageAlt} />
-                                      </div>
-                                      <figcaption class="c-visual-fit_caption c-visual-fit_caption-carouselGallery">{item.caption}</figcaption>
-                                    </figure>
+          </section>
+        ) : (
+          <section class="l-section">
+            <div class="l-container">
+              <div class="l-threeColumn-line">
+                {items.map((item) => (
+                  <div class="l-threeColumn-line_item c-casesCard">
+                    <a class="c-casesCard_link" href={`/cases/elevator/gallery/${item.id}`}>
+                      {item.listImage && (
+                        <div class="c-casesCard_linkImage">
+                          <figure class="c-casesCard_linkImageSrc">
+                            <img src={item.listImage} alt={item.listImageAlt || item.title} width="380" height="214" />
+                          </figure>
+                        </div>
+                      )}
+                      <div class="c-casesCard_linkContents">
+                        <div class="c-casesCard_linkContentsInner">
+                          {item.productTags.length > 0 && (
+                            <ul class="c-list-tag">
+                              {item.productTags.map((tag) => (
+                                <li class="c-list-tag_item">
+                                  <div class="c-tag">
+                                    <span class="c-tag_text c-tag_text-fsXSmall">{tag}</span>
                                   </div>
                                 </li>
                               ))}
                             </ul>
-                          </div>
-                          <div class="c-carousel_footer">
-                            <button class="c-carousel_arrow c-carousel_arrow-prev" type="button" data-js-vi_prev>
-                              <span class="c-carousel_arrowButton">
-                                <span class="material-icons-outlined material-icons-outlined-small material-icons-outlined-arrow-back">&nbsp;</span>
-                              </span>
-                            </button>
-                            <button class="c-carousel_arrow c-carousel_arrow-next" type="button" data-js-vi_next>
-                              <span class="c-carousel_arrowButton">
-                                <span class="material-icons-outlined material-icons-outlined-small material-icons-outlined-arrow-forward">&nbsp;</span>
-                              </span>
-                            </button>
-                          </div>
+                          )}
+                          <p class="c-casesCard_linkTitle">{item.title}</p>
                         </div>
-                        <div class="c-carousel c-carousel-nav" data-js-sync-slide-vi="slide_nav">
-                          <div class="c-carousel_body" data-js-vi_body>
-                            <ul class="c-carousel_main" data-js-vi_main>
-                              {page.gallery.map((item) => (
-                                <li class="c-carousel_item c-visual-cover" aria-hidden="false">
-                                  <figure class="c-carousel_itemInner c-visual-cover_image">
-                                    <img src={item.image} alt={item.imageAlt} />
-                                  </figure>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                        <div class="c-casesCard_linkArrow">
+                          <span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
                         </div>
                       </div>
-                    </div>
-                    {page.galleryBody && (
-                      <div class="c-editarea" set:html={galleryBody} />
-                    )}
-                  </div>
-                </section>
-              )}
-
-              {/* 5. 主な仕様セクション */}
-              {hasSpecs && (
-                <div class="l-section-editarea">
-                  <div class="l-container">
-                    <div class="c-editarea">
-                      <h2 class="c-headingLv1">主な仕様</h2>
-                      {page.specs.map((spec) => (
-                        <>
-                          {spec.specTitle && <h3 class="c-headingLv2">{spec.specTitle}</h3>}
-                          {spec.specBody && (
-                            <div set:html={absolutize(spec.specBody)} />
-                          )}
-                          {(spec.specImagePc || spec.specImageSp) && (
-                            <picture>
-                              {spec.specImageSp && (
-                                <source media="(max-width: 767px)" srcset={spec.specImageSp} />
-                              )}
-                              <img src={spec.specImagePc || spec.specImageSp} alt={spec.specImageAlt} width="182" height="182" />
-                            </picture>
-                          )}
-                        </>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* CVエリア */}
-              <div class="c-cvColumn">
-                <section class="c-cvColumn_item c-cvColumn_item-catalog">
-                  <div class="c-cvColumn_itemInner">
-                    <h2 class="c-cvColumn_itemTitle">資料ダウンロード</h2>
-                    <div class="c-cvColumn_itemText">
-                      <p class="u-flex-wrap u-flex-wrap-center">
-                        <span class="u-flex-wrap_block">製品・ソリューションに関する資料や</span><span class="u-flex-wrap_block">製品カタログのダウンロードはこちらから</span>
-                      </p>
-                    </div>
-                    <div class="c-cvColumn_itemButton">
-                      <a class="c-btn c-btn-width320 c-btn-large c-btn-secondary" href="https://www.mebs.co.jp/catalog/">
-                        <span class="c-btn_text">資料ダウンロード</span>
-                        <span class="c-btn_arrow material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
-                      </a>
-                    </div>
-                  </div>
-                </section>
-                <section class="c-cvColumn_item">
-                  <div class="c-cvColumn_itemInner">
-                    <h2 class="c-cvColumn_itemTitle">お問い合わせ</h2>
-                    <div class="c-cvColumn_itemText">
-                      <p class="u-flex-wrap u-flex-wrap-center">
-                        <span class="u-flex-wrap_block">製品・ソリューションの導入に関する</span><span class="u-flex-wrap_block">ご質問・ご相談はこちらから</span>
-                      </p>
-                    </div>
-                    <div class="c-cvColumn_itemButton">
-                      <a class="c-btn c-btn-width320 c-btn-large c-btn-cv" href="https://www.mebs.co.jp/contact/form_products_solutions.html">
-                        <span class="c-btn_text">お問い合わせ</span>
-                        <span class="c-btn_arrow material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
-                      </a>
-                    </div>
-                  </div>
-                </section>
-              </div>
-
-            </div>
-            {/* /.u-bg-black02 */}
-
-            {/* 導入事例をもっと見る */}
-            <section class="l-section l-section-relation u-bg-grey100">
-              <div class="l-container">
-                <h2 class="c-headingLv1 c-headingLv1-mt0">導入事例をもっと見る</h2>
-                <div class="l-threeColumn-line">
-                  {relatedItems.map((item) => (
-                    <div class="l-threeColumn-line_item c-casesCard">
-                      <a class="c-casesCard_link" href={`https://www.mebs.co.jp/cases/elevator/gallery/${item.id}.html`}>
-                        {item.listImage && (
-                          <div class="c-casesCard_image">
-                            <img src={item.listImage} alt={item.listImageAlt || item.title} />
-                          </div>
-                        )}
-                        <div class="c-casesCard_body">
-                          <p class="c-casesCard_title">{item.title}</p>
-                          {item.listSummary && (
-                            <p class="c-casesCard_text">{item.listSummary}</p>
-                          )}
-                        </div>
-                      </a>
-                    </div>
-                  ))}
-                </div>
-                <div class="l-section_bottomButton">
-                  <div class="c-btn-wrapper">
-                    <a class="c-btn c-btn-small c-btn-width280-pc c-btn-width210-sp c-btn-secondary" href="https://www.mebs.co.jp/cases/">
-                      <span class="c-btn_text">導入事例一覧</span>
-                      <span class="c-btn_arrow material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
                     </a>
                   </div>
-                </div>
+                ))}
               </div>
-            </section>
-
-            {/* お役立ち情報 */}
-            <section class="l-section l-section-relation u-bg-grey100">
-              <div class="l-container">
-                <h2 class="c-headingLv1 c-headingLv1-mt0">お役立ち情報</h2>
-                <div class="l-twoColumn c-miscCard02">
-                  <a class="l-twoColumn_item l-twoColumn_item-spMtWide c-miscCard02_link" href="https://www.mebs.co.jp/useful/">
-                    <div class="c-miscCard02_linkImage">
-                      <figure class="c-miscCard02_linkImageSrc">
-                        <img src="https://www.mebs.co.jp/assets/img/common/relation_useful.jpg" alt="画像" width="567" height="284" />
-                      </figure>
-                    </div>
-                    <div class="c-miscCard02_linkContents">
-                      <div class="c-miscCard02_linkContentsInner">
-                        <h3 class="c-miscCard02_linkTitle u-flex-wrap">
-                          <span class="u-flex-wrap_block">ビルソリューション</span><span class="u-flex-wrap_block">ジャーナル</span>
-                        </h3>
-                        <div class="c-miscCard02_linkText">
-                          <p>ビルに関わるすべての方に、意外と知らない「ビル」に関する情報を記事としてお届けします。</p>
-                        </div>
-                      </div>
-                      <div class="c-miscCard02_linkArrow">
-                        <span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
-                      </div>
-                    </div>
-                  </a>
-                  <a class="l-twoColumn_item l-twoColumn_item-spMtWide c-miscCard02_link" href="https://www.mebs.co.jp/seminars/">
-                    <div class="c-miscCard02_linkImage">
-                      <figure class="c-miscCard02_linkImageSrc">
-                        <img src="https://www.mebs.co.jp/assets/img/common/relation_seminars.jpg" alt="画像" width="567" height="284" />
-                      </figure>
-                    </div>
-                    <div class="c-miscCard02_linkContents">
-                      <div class="c-miscCard02_linkContentsInner">
-                        <h3 class="c-miscCard02_linkTitle u-flex-wrap">
-                          <span class="u-flex-wrap_block">セミナー・イベント</span>
-                        </h3>
-                        <div class="c-miscCard02_linkText">
-                          <p>ビル設備や製品・ソリューションに関連した各種テーマのセミナー・イベントをご案内します。</p>
-                        </div>
-                      </div>
-                      <div class="c-miscCard02_linkArrow">
-                        <span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </section>
-
-          </main>
-        </div>
-      </>
-    ) : (
-      <>
-        <div class="l-globalContainer">
-          <main class="g-pageMain" role="main">
-            <div class="l-container" style="padding: 4rem 1rem;">
-              <h1>404</h1>
-              <p>指定された導入事例は見つかりませんでした。</p>
             </div>
-          </main>
-        </div>
-      </>
-    )}
+          </section>
+        )}
+
+      </main>
+    </div>
 
     <footer class="g-footer" role="contentinfo">
-<!-- フッター ナビ 開始 .g-footerNav -->
 <div class="g-footerNav">
 <div class="g-footer_inner">
 <div class="g-footerNav_main" data-js-accordion="">
@@ -858,8 +564,6 @@ const relatedItems = allContents
 </div>
 </div>
 </div>
-<!-- フッター ナビ 終了 /.g-footerNav -->
-<!-- フッター 下部 開始 .g-footer_separator -->
 <div class="g-footer_separator">
 <div class="g-footer_inner">
 <div class="g-footerSubNav">
@@ -875,7 +579,6 @@ const relatedItems = allContents
 </div>
 </div>
 </div>
-<!-- フッター 下部 終了 /.g-footer_separator -->
 </footer>
 
   </div>

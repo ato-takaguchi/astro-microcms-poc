@@ -2,22 +2,43 @@ const serviceDomain = import.meta.env.MICROCMS_SERVICE_DOMAIN;
 const apiKey = import.meta.env.MICROCMS_API_KEY;
 const endpointName = import.meta.env.MICROCMS_ENDPOINT || 'case-gallery';
 
-function getEndpointUrl() {
+function getEndpointUrl(contentId = '') {
   if (!serviceDomain || !apiKey) {
-    throw new Error('環境変数 MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY が未設定です。');
+    throw new Error('MICROCMS_SERVICE_DOMAIN または MICROCMS_API_KEY が設定されていません。');
   }
-  return `https://${serviceDomain}.microcms.io/api/v1/${endpointName}`;
+
+  const suffix = contentId ? `/${encodeURIComponent(contentId)}` : '';
+  return `https://${serviceDomain}.microcms.io/api/v1/${endpointName}${suffix}`;
 }
 
-async function microcmsFetch(query = '') {
-  const endpoint = getEndpointUrl();
-  const url = query ? `${endpoint}?${query}` : endpoint;
+function buildQuery(params = {}) {
+  const searchParams = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null || value === '') continue;
+    searchParams.set(key, String(value));
+  }
+
+  return searchParams.toString();
+}
+
+async function microcmsFetch({ contentId = '', query = {} } = {}) {
+  const endpoint = getEndpointUrl(contentId);
+  const queryString = buildQuery(query);
+  const url = queryString ? `${endpoint}?${queryString}` : endpoint;
+
   const response = await fetch(url, {
-    headers: { 'X-MICROCMS-API-KEY': apiKey }
+    headers: { 'X-MICROCMS-API-KEY': apiKey },
   });
+
+  if (response.status === 404) {
+    return null;
+  }
+
   if (!response.ok) {
     throw new Error(`microCMS API error: ${response.status} ${response.statusText}`);
   }
+
   return response.json();
 }
 
@@ -27,14 +48,25 @@ export async function getAllContents() {
   const contents = [];
 
   while (true) {
-    const data = await microcmsFetch(`limit=${limit}&offset=${offset}`);
-    const chunk = Array.isArray(data.contents) ? data.contents : [];
+    const data = await microcmsFetch({
+      query: { limit, offset },
+    });
+    const chunk = Array.isArray(data?.contents) ? data.contents : [];
     contents.push(...chunk);
     if (chunk.length < limit) break;
     offset += limit;
   }
 
   return contents;
+}
+
+export async function getContentById(id, { draftKey } = {}) {
+  if (!id) return null;
+
+  return microcmsFetch({
+    contentId: id,
+    query: { draftKey },
+  });
 }
 
 function firstNonEmpty(...values) {
@@ -44,30 +76,70 @@ function firstNonEmpty(...values) {
   return '';
 }
 
-function stripHtml(html) {
-  if (!html || typeof html !== 'string') return '';
-  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-}
-
 export function normalizeCaseItem(item) {
-  const title = firstNonEmpty(item.title, item.name, item.id) || item.id;
-  const body = firstNonEmpty(item.body, item.content, item.html);
-  const plainText = stripHtml(body);
+  const title = item?.facilityName || item?.id || '事例詳細';
+
   const description = firstNonEmpty(
-    item.description,
-    plainText.slice(0, 120),
-    `導入事例「${title}」のご紹介ページです。`
+    item?.metaDescription,
+    item?.listSummary,
+    `${title} の導入事例ページです。`,
   );
 
+  const productTags = Array.isArray(item?.productTags) ? item.productTags : [];
+  const buildingTags = Array.isArray(item?.buildingTags) ? item.buildingTags : [];
+  const serviceTags = Array.isArray(item?.serviceTags) ? item.serviceTags : [];
+
+  const gallery = Array.isArray(item?.gallery)
+    ? item.gallery.map((g) => ({
+        image: g?.image?.url ?? '',
+        imageAlt: g?.imageAlt ?? '',
+        caption: g?.caption ?? '',
+      }))
+    : [];
+
+  const specs = Array.isArray(item?.specs)
+    ? item.specs.map((s) => ({
+        specTitle: s?.specTitle ?? '',
+        specBody: s?.specBody ?? '',
+        specImagePc: s?.specImagePc?.url ?? '',
+        specImageSp: s?.specImageSp?.url ?? '',
+        specImageAlt: s?.specImageAlt ?? '',
+      }))
+    : [];
+
   return {
-    id: item.id,
+    id: item?.id ?? '',
     title,
-    body,
-    metaTitle: firstNonEmpty(item.metaTitle, `${title} | 導入事例 | 三菱電機ビルソリューションズ株式会社`),
+    companyName: item?.companyName ?? '',
     description,
-    canonicalUrl: `https://www.mebs.co.jp/cases/elevator/gallery/${item.id}.html`,
-    ogImage: 'https://www.mebs.co.jp/common/img/ogp.png',
-    publishedAt: item.publishedAt || item.createdAt || new Date().toISOString(),
-    updatedAt: item.updatedAt || item.revisedAt || item.publishedAt || item.createdAt || new Date().toISOString()
+    externalUrl: item?.externalUrl ?? '',
+    listImage: item?.listImage?.url ?? '',
+    listImageAlt: item?.listImageAlt ?? '',
+    listSummary: item?.listSummary ?? '',
+    mainVisual: item?.mainVisual?.url ?? '',
+    mainVisualAlt: item?.mainVisualAlt ?? '',
+    mainVisualCaption: item?.mainVisualCaption ?? '',
+    overviewBody: item?.overviewBody ?? '',
+    overviewImage: item?.overviewImage?.url ?? '',
+    overviewImageAlt: item?.overviewImageAlt ?? '',
+    galleryBody: item?.galleryBody ?? '',
+    gallery,
+    specs,
+    productTags,
+    buildingTags,
+    serviceTags,
+    metaTitle: firstNonEmpty(item?.metaTitle, `${title} | 導入事例`),
+    canonicalUrl: firstNonEmpty(
+      item?.canonicalUrl,
+      `https://www.mebs.co.jp/cases/elevator/gallery/${item?.id ?? ''}.html`,
+    ),
+    ogImage: item?.listImage?.url || 'https://www.mebs.co.jp/common/img/ogp.png',
+    publishedAt: item?.publishedAt || item?.createdAt || new Date().toISOString(),
+    updatedAt:
+      item?.updatedAt ||
+      item?.revisedAt ||
+      item?.publishedAt ||
+      item?.createdAt ||
+      new Date().toISOString(),
   };
 }
