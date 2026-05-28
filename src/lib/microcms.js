@@ -76,34 +76,65 @@ function firstNonEmpty(...values) {
   return '';
 }
 
-function stripHtml(html) {
-  if (!html || typeof html !== 'string') return '';
-  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-}
-
 export function normalizeCaseItem(item) {
-  const title = firstNonEmpty(item?.title, item?.name, item?.id) || item?.id || '事例詳細';
-  const body = firstNonEmpty(item?.body, item?.content, item?.html);
-  const plainText = stripHtml(body);
+  const title = item?.facilityName || item?.id || '事例詳細';
+
   const description = firstNonEmpty(
-    item?.description,
-    plainText.slice(0, 120),
+    item?.metaDescription,
+    item?.listSummary,
     `${title} の導入事例ページです。`,
   );
+
+  const productTags = Array.isArray(item?.productTags) ? item.productTags : [];
+  const buildingTags = Array.isArray(item?.buildingTags) ? item.buildingTags : [];
+  const serviceTags = Array.isArray(item?.serviceTags) ? item.serviceTags : [];
+
+  const gallery = Array.isArray(item?.gallery)
+    ? item.gallery.map((g) => ({
+        image: g?.image?.url ?? '',
+        imageAlt: g?.imageAlt ?? '',
+        caption: g?.caption ?? '',
+      }))
+    : [];
+
+  const specs = Array.isArray(item?.specs)
+    ? item.specs.map((s) => ({
+        specTitle: s?.specTitle ?? '',
+        specBody: s?.specBody ?? '',
+        specImagePc: s?.specImagePc?.url ?? '',
+        specImageSp: s?.specImageSp?.url ?? '',
+        specImageAlt: s?.specImageAlt ?? '',
+      }))
+    : [];
 
   return {
     id: item?.id ?? '',
     title,
-    body,
-    metaTitle: firstNonEmpty(item?.metaTitle, `${title} | 導入事例`),
+    companyName: item?.companyName ?? '',
     description,
+    externalUrl: item?.externalUrl ?? '',
+    listImage: item?.listImage?.url ?? '',
+    listImageAlt: item?.listImageAlt ?? '',
+    listSummary: item?.listSummary ?? '',
+    mainVisual: item?.mainVisual?.url ?? '',
+    mainVisualAlt: item?.mainVisualAlt ?? '',
+    mainVisualCaption: item?.mainVisualCaption ?? '',
+    overviewBody: item?.overviewBody ?? '',
+    overviewImage: item?.overviewImage?.url ?? '',
+    overviewImageAlt: item?.overviewImageAlt ?? '',
+    galleryBody: item?.galleryBody ?? '',
+    gallery,
+    specs,
+    productTags,
+    buildingTags,
+    serviceTags,
+    metaTitle: firstNonEmpty(item?.metaTitle, `${title} | 導入事例`),
     canonicalUrl: firstNonEmpty(
       item?.canonicalUrl,
       `https://www.mebs.co.jp/cases/elevator/gallery/${item?.id ?? ''}.html`,
     ),
-    ogImage: firstNonEmpty(item?.ogImage, 'https://www.mebs.co.jp/common/img/ogp.png'),
-    publishedAt:
-      item?.publishedAt || item?.createdAt || new Date().toISOString(),
+    ogImage: item?.listImage?.url || 'https://www.mebs.co.jp/common/img/ogp.png',
+    publishedAt: item?.publishedAt || item?.createdAt || new Date().toISOString(),
     updatedAt:
       item?.updatedAt ||
       item?.revisedAt ||
