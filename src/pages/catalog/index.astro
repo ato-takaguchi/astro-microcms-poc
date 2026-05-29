@@ -1,0 +1,163 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CatalogCard from '../../components/CatalogCard.astro';
+import { getCatalogData } from '../../lib/microcms.js';
+
+const ASSET_BASE = 'https://www.mebs.co.jp';
+
+const categories = await getCatalogData();
+const anchors = categories.map((cat) => ({ anchor: cat.anchor, name: cat.name }));
+---
+
+<BaseLayout
+  title="資料ダウンロード | 三菱電機ビルソリューションズ株式会社"
+  description="各種資料のダウンロードページになります。三菱電機ビルソリューションズ"
+>
+
+  <div class="c-breadcrumb">
+    <div class="c-breadcrumb_inner">
+      <ul class="c-breadcrumb_list" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li class="c-breadcrumb_listItem" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <div class="c-breadcrumb_listItemInner">
+            <a class="c-breadcrumb_listLink" href={`${ASSET_BASE}/`} itemprop="item">
+              <span itemprop="name">トップページ</span>
+            </a>
+            <meta itemprop="position" content="1" />
+          </div>
+        </li>
+        <li class="c-breadcrumb_listItem" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <div class="c-breadcrumb_listItemInner">
+            <span class="c-breadcrumb_listText"><span itemprop="name">資料ダウンロード</span></span>
+            <meta itemprop="position" content="2" />
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="l-globalContainer">
+    <main class="g-pageMain" role="main">
+
+      <div class="c-titleHeading">
+        <div class="l-container l-container-positionR">
+          <div class="c-titleHeading_inner">
+            <div class="c-titleHeading_block">
+              <h1 class="c-titleHeading_main">資料ダウンロード</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-accordionAnchorHeading">
+        <div class="l-container l-container-sp-nogutter">
+          <div class="c-accordion c-accordion-spOnly" data-js-accordion>
+            <div class="c-accordion_section" data-js-accordion-wrapper>
+              <button type="button" class="c-accordion_title c-accordion_title-wide" data-js-accordion-trigger aria-expanded="false">
+                <span class="c-accordion_titleMain">目次</span>
+                <span class="c-accordion_titleIcon">
+                  <span class="i-area i-area16 is-close">
+                    <span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span>
+                  </span>
+                  <span class="i-area i-area16 is-open">
+                    <span class="material-icons-outlined material-icons-outlined-remove">&nbsp;</span>
+                  </span>
+                </span>
+              </button>
+              <div class="c-accordion_content" data-js-accordion-content aria-hidden="true">
+                <div class="c-accordion_contentInner c-accordion_contentInner-wide">
+                  <ul class="c-anchor-list" data-js-localscroll>
+                    {anchors.map((a) => (
+                      <li class="c-anchor-list_item">
+                        <a class="c-anchor-list_link" href={`#${a.anchor}`}>
+                          <span class="c-anchor-list_text">{a.name}</span>
+                          <span class="c-anchor-list_arrow">
+                            <span class="material-icons-outlined material-icons-outlined-arrow-downward">&nbsp;</span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="l-subContainer">
+        <div class="l-container">
+
+          {categories.map((cat) => (
+            <section class="l-section">
+              <h2 id={cat.anchor} class="c-headingLv1">{cat.name}</h2>
+
+              {cat.items.length > 0 && (
+                <div class="l-fourColumn">
+                  {cat.items.map((item) => <CatalogCard item={item} />)}
+                </div>
+              )}
+
+              {cat.children.map((sub) => (
+                <section class="l-section-sub">
+                  <h3 class="c-headingLv2">{sub.name}</h3>
+
+                  {sub.items.length > 0 && (
+                    <div class="l-fourColumn">
+                      {sub.items.map((item) => <CatalogCard item={item} />)}
+                    </div>
+                  )}
+
+                  {sub.children.map((nest) => (
+                    <section class="l-section-nest">
+                      <h4 class="c-headingLv3">{nest.name}</h4>
+                      {nest.items.length > 0 && (
+                        <div class="l-fourColumn">
+                          {nest.items.map((item) => <CatalogCard item={item} />)}
+                        </div>
+                      )}
+                    </section>
+                  ))}
+                </section>
+              ))}
+            </section>
+          ))}
+
+        </div>
+      </div>
+
+      <section class="c-cv">
+        <div class="l-container">
+          <div class="c-cv_inner">
+            <h3 class="c-cv_title">お問い合わせ</h3>
+            <div class="c-cv_text">
+              <p>製品・ソリューションに関するご相談やご契約内容の確認、ソフトウェアのお申し込みなど各種お問い合わせはこちらから</p>
+              <p class="c-note c-note-grey">故障対応等、緊急のご連絡については、お電話でお願いいたします。</p>
+            </div>
+            <div class="c-cv_button">
+              <div class="c-cv_buttonItem">
+                <div class="c-btn-wrapper">
+                  <a class="c-btn c-btn-width250-sp c-btn-secondary" href="https://www.mebs.co.jp/contact/form_products_solutions.html">
+                    <span class="c-btn_text">お問い合わせ一覧</span>
+                    <span class="c-btn_arrow material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
+                  </a>
+                </div>
+              </div>
+              <div class="c-cv_buttonItem">
+                <div class="c-btn-wrapper">
+                  <a class="c-btn c-btn-width250-sp c-btn-secondary" href="https://www.mebs.co.jp/corporate/group/office/">
+                    <span class="c-btn_text">お電話でのお問い合わせ</span>
+                    <span class="c-btn_arrow material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</BaseLayout>

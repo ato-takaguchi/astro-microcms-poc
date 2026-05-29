@@ -1,0 +1,500 @@
+---
+const { title, description, canonicalUrl } = Astro.props;
+const ASSET_BASE = 'https://www.mebs.co.jp';
+---
+
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" />
+  <link rel="stylesheet" href={`${ASSET_BASE}/assets/css/style.css?2025030801`} type="text/css" />
+</head>
+<body>
+  <div id="wrapper" class="g-wrapper">
+
+    <header class="g-header" role="banner" data-js-hamburger="" data-js-header="">
+<div class="g-header_fog" data-js-hamburger-overlay=""></div>
+<div class="g-header_main" data-js-dropdown="">
+<div class="g-headerLogoGlobalSearch">
+<div class="g-header_inner">
+<div class="g-headerLogoGlobalSearch_inner">
+<div class="g-headerLogo">
+<a class="g-headerLogo_link" href="https://www.mebs.co.jp/">
+<span class="g-headerLogo_img g-headerLogo_img-pc">
+<img src="https://www.mebs.co.jp/assets/img/logo.svg" alt="Mitsubishi Electric | 三菱電機ビルソリューションズ株式会社" width="345" height="45">
+</span>
+<span class="g-headerLogo_img g-headerLogo_img-sp">
+<img src="https://www.mebs.co.jp/assets/img/logo_sp.svg" alt="Mitsubishi Electric | 三菱電機ビルソリューションズ株式会社" width="345" height="45">
+</span>
+</a>
+</div>
+<div class="g-headerGlobalSearch">
+<div class="g-headerGlobalSearch_inner">
+<div class="g-headerGlobal">
+<a class="g-headerGlobal_link" href="https://www.mebs.com/" target="_blank">Global</a>
+</div>
+<div class="g-headerSearch g-headerSearch-pc">
+<div class="g-headerSearch_inner">
+<div class="c-searchBox">
+<form class="c-searchBox_form" action="/search/result.html" method="get" name="seek" role="search">
+<input class="c-searchBox_input c-searchBox_input-header phrase" type="search" name="q" value="" placeholder="サイト内検索" title="サイト内検索">
+<button type="submit" class="c-searchBox_submit">
+<img class="i-button i-button-search" src="https://www.mebs.co.jp/assets/img/icons/ic_search.svg" alt="検索ボタン">
+</button>
+</form>
+</div>
+</div>
+</div>
+<div class="g-headerSwitch" data-js-hamburger-switch="">
+<div class="g-headerSwitch_icon">
+<button type="button" class="g-headerSwitch_iconLink g-headerHamburger" data-js-hamburger-trigger="menu" aria-haspopup="false" aria-expanded="false" aria-hidden="true">
+<div class="g-headerHamburger_main is-close">
+<span class="g-headerHamburger_icon"><img class="i-button" src="https://www.mebs.co.jp/assets/img/icons/ic_menu.svg" alt="メニューを開く"></span>
+<span class="g-headerHamburger_text">メニュー</span>
+</div>
+<div class="g-headerHamburger_main is-open">
+<span class="g-headerHamburger_icon"><img class="i-button" src="https://www.mebs.co.jp/assets/img/icons/ic_close.svg" alt="メニューを閉じる"></span>
+<span class="g-headerHamburger_text">閉じる</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="g-headerNavWrapper" data-js-hamburger-content="" aria-hidden="false">
+<div class="g-headerNavWrapper_inner">
+<div class="g-headerSearch g-headerSearch-sp">
+<div class="g-headerSearch_inner">
+<div class="c-searchBox">
+<form class="c-searchBox_form c-searchBox_form-spFull" action="/search/result.html" method="get" name="seek" role="search">
+<input class="c-searchBox_input c-searchBox_input-header phrase" type="search" name="q" value="" placeholder="サイト内検索" title="サイト内検索">
+<button type="submit" class="c-searchBox_submit">
+<img class="i-button i-button-search" src="https://www.mebs.co.jp/assets/img/icons/ic_search.svg" alt="検索ボタン">
+</button>
+</form>
+</div>
+</div>
+</div>
+<div class="g-headerSubNav">
+<div class="g-header_inner">
+<div class="g-headerSubNav_inner">
+<ul class="g-headerSubNav_list">
+<li class="g-headerSubNav_listItem">
+<a class="g-headerSubNav_listItemLink" href="https://www.mebs.co.jp/useful/">
+<span class="g-headerSubNav_listItemLinkIcon">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"><path fill="#4F5975" d="M3.75 15.75v-12c0-.413.147-.766.44-1.06.294-.293.647-.44 1.06-.44h7.5c.412 0 .766.147 1.06.44.293.294.44.647.44 1.06v12L9 13.5l-5.25 2.25Z"></path></svg>
+</span>
+<span class="g-headerSubNav_listItemLinkText">ビルソリューション ジャーナル</span>
+</a>
+</li>
+<li class="g-headerSubNav_listItem">
+<a class="g-headerSubNav_listItemLink" href="https://www.mebs.co.jp/seminars/">
+<span class="g-headerSubNav_listItemLinkIcon">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"><path fill="#4F5975" d="M3.75 16.5c-.413 0-.766-.147-1.06-.44A1.445 1.445 0 0 1 2.25 15V4.5c0-.412.147-.766.44-1.06.294-.293.647-.44 1.06-.44h.75V1.5H6V3h6V1.5h1.5V3h.75c.412 0 .766.147 1.06.44.293.294.44.648.44 1.06V15c0 .412-.147.766-.44 1.06-.294.293-.648.44-1.06.44H3.75Zm0-1.5h10.5V7.5H3.75V15Zm0-9h10.5V4.5H3.75V6ZM9 10.5a.726.726 0 0 1-.534-.216.726.726 0 0 1-.216-.534c0-.213.072-.39.216-.534A.726.726 0 0 1 9 9c.213 0 .39.072.534.216a.726.726 0 0 1 .216.534c0 .213-.072.39-.216.534A.726.726 0 0 1 9 10.5Zm-3 0a.726.726 0 0 1-.534-.216.726.726 0 0 1-.216-.534c0-.213.072-.39.216-.534A.726.726 0 0 1 6 9c.213 0 .39.072.534.216a.726.726 0 0 1 .216.534c0 .213-.072.39-.216.534A.726.726 0 0 1 6 10.5Zm6 0a.726.726 0 0 1-.534-.216.726.726 0 0 1-.216-.534c0-.213.072-.39.216-.534A.726.726 0 0 1 12 9c.213 0 .39.072.534.216a.726.726 0 0 1 .216.534c0 .213-.072.39-.216.534A.726.726 0 0 1 12 10.5Zm-3 3a.726.726 0 0 1-.534-.216.726.726 0 0 1-.216-.534c0-.213.072-.39.216-.534A.726.726 0 0 1 9 12c.213 0 .39.072.534.216a.726.726 0 0 1 .216.534c0 .213-.072.39-.216.534A.726.726 0 0 1 9 13.5Zm-3 0a.726.726 0 0 1-.534-.216.726.726 0 0 1-.216-.534c0-.213.072-.39.216-.534A.726.726 0 0 1 6 12c.213 0 .39.072.534.216a.726.726 0 0 1 .216.534c0 .213-.072.39-.216.534A.726.726 0 0 1 6 13.5Zm6 0a.726.726 0 0 1-.534-.216.726.726 0 0 1-.216-.534c0-.213.072-.39.216-.534A.726.726 0 0 1 12 12c.213 0 .39.072.534.216a.726.726 0 0 1 .216.534c0 .213-.072.39-.216.534A.726.726 0 0 1 12 13.5Z"></path></svg>
+</span>
+<span class="g-headerSubNav_listItemLinkText">セミナー・イベント</span>
+</a>
+</li>
+<li class="g-headerSubNav_listItem">
+<a class="g-headerSubNav_listItemButton" href="https://www.mebs.co.jp/forcustomer/">
+<span class="g-headerSubNav_listItemButtonIcon">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"><path fill="#FFF" d="M9 9a2.889 2.889 0 0 1-2.119-.881A2.889 2.889 0 0 1 6 6c0-.825.294-1.531.881-2.119A2.889 2.889 0 0 1 9 3c.825 0 1.531.294 2.119.881C11.706 4.47 12 5.175 12 6c0 .825-.294 1.531-.881 2.119A2.889 2.889 0 0 1 9 9Zm-6 6v-2.1c0-.425.11-.816.328-1.172.219-.356.51-.628.872-.816a11.138 11.138 0 0 1 2.362-.871 10.32 10.32 0 0 1 4.875 0c.8.193 1.588.484 2.363.871.362.188.653.46.872.816.219.356.328.747.328 1.172V15H3Z"></path></svg>
+</span>
+<span class="g-headerSubNav_listItemButtonText">お取引のあるお客様へ</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="g-headerMenu">
+<div class="g-headerMenu_inner g-header_inner">
+<div class="g-headerMenu_root">
+<nav class="g-headerNav" data-js-hamburger-category="menu">
+<ul class="g-headerNav_list">
+<li class="g-headerNav_listItem g-headerNavDropdown" data-js-dropdown-wrapper="">
+<a class="g-headerNav_listItemLink g-headerNavDropdown_trigger" href="https://www.mebs.co.jp/about/" data-js-nav-current="about" data-js-dropdown-trigger="" aria-expanded="false">
+<span class="g-headerNav_listItemLinkTitle">私たちの目指す姿</span>
+<span class="g-headerNav_listItemLinkIcon">
+<span class="i-area i-area12 close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span>
+<span class="i-area i-area12 open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span>
+</span>
+</a>
+<div class="g-headerNavDropdown_content" data-js-dropdown-content="" aria-hidden="true" style="display: none;">
+<div class="g-headerNavDropdown_contentInner"><div class="g-headerNavDropdown_contentBox">
+<div class="g-headerNavDropdownMain">
+<div class="g-headerNavDropdownMain_head">
+<a class="g-headerNavDropdownMain_headLink" href="https://www.mebs.co.jp/about/"><span class="g-headerNavDropdownMain_headLinkInner"><span class="g-headerNavDropdownMain_headLinkText">私たちの目指す姿</span><span class="g-headerNavDropdownMain_headLinkArrow"><span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span></span></span></a>
+</div>
+<div class="g-headerNavDropdownMain_contents"><div class="g-headerNavDropdownMain_column">
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item g-headerNavDropdownMain_item-sp"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/about/">私たちの目指す姿 トップ</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/about/issue/">私たちが向き合う課題</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/about/business/">つくる、みまもる、進化させる</a></div>
+</div>
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/about/integrated-solutions/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">三菱電機グループの</span><span class="u-flex-wrap_block">総合力を</span><span class="u-flex-wrap_block">活かした</span><span class="u-flex-wrap_block">ソリューション</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/about/safety/">安全・安心・快適の追求</a></div>
+</div>
+</div></div>
+</div>
+</div></div>
+</div>
+</li>
+<li class="g-headerNav_listItem g-headerNavDropdown" data-js-dropdown-wrapper="">
+<a class="g-headerNav_listItemLink g-headerNavDropdown_trigger" href="https://www.mebs.co.jp/elevator/" data-js-nav-current="products" data-js-dropdown-trigger="" aria-expanded="false">
+<span class="g-headerNav_listItemLinkTitle">製品・ソリューション</span>
+<span class="g-headerNav_listItemLinkIcon">
+<span class="i-area i-area12 close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span>
+<span class="i-area i-area12 open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span>
+</span>
+</a>
+<div class="g-headerNavDropdown_content" data-js-dropdown-content="" aria-hidden="true" style="display: none;">
+<div class="g-headerNavDropdown_contentInner"><div class="g-headerNavDropdown_contentBox">
+<div class="g-headerNavDropdownMain">
+<div class="g-headerNavDropdownMain_head">
+<a class="g-headerNavDropdownMain_headLink" href="https://www.mebs.co.jp/elevator/"><span class="g-headerNavDropdownMain_headLinkInner"><span class="g-headerNavDropdownMain_headLinkText">製品・ソリューション</span><span class="g-headerNavDropdownMain_headLinkArrow"><span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span></span></span></a>
+</div>
+<div class="g-headerNavDropdownMain_contents">
+<div class="g-headerNavDropdownMain_column">
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item g-headerNavDropdownMain_item-sp"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/elevator/">製品・ソリューション トップ</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/smartcity-buildsolution/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">スマートシティ・</span><span class="u-flex-wrap_block">ビルソリューション</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/elevator/">エレベーター</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/escalator/">エスカレーター</a></div>
+</div>
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/refri-aircon-ventilation/">空調・冷熱・換気</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/building/">ビルマネジメントシステム</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/other/">その他ソリューション</a></div>
+</div>
+</div>
+<div class="g-headerNavDropdownMain_column">
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink02" href="https://www.mebs.co.jp/purposes/"><span class="g-headerNavDropdownMain_itemLink02Text">目的・ニーズから探す</span><span class="g-headerNavDropdownMain_itemLink02Arrow"><span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span></span></a></div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+</li>
+<li class="g-headerNav_listItem">
+<a href="https://www.mebs.co.jp/cases/" class="g-headerNav_listItemLink" data-js-nav-current="cases">
+<span class="g-headerNav_listItemLinkTitle">導入事例</span>
+</a>
+</li>
+<li class="g-headerNav_listItem g-headerNavDropdown" data-js-dropdown-wrapper="">
+<a class="g-headerNav_listItemLink g-headerNavDropdown_trigger" href="https://www.mebs.co.jp/corporate/" data-js-nav-current="corporate" data-js-dropdown-trigger="" aria-expanded="false">
+<span class="g-headerNav_listItemLinkTitle">企業情報</span>
+<span class="g-headerNav_listItemLinkIcon">
+<span class="i-area i-area12 close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span>
+<span class="i-area i-area12 open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span>
+</span>
+</a>
+<div class="g-headerNavDropdown_content" data-js-dropdown-content="" aria-hidden="true" style="display: none;">
+<div class="g-headerNavDropdown_contentInner"><div class="g-headerNavDropdown_contentBox">
+<div class="g-headerNavDropdownMain">
+<div class="g-headerNavDropdownMain_head">
+<a class="g-headerNavDropdownMain_headLink" href="https://www.mebs.co.jp/corporate/"><span class="g-headerNavDropdownMain_headLinkInner"><span class="g-headerNavDropdownMain_headLinkText">企業情報</span><span class="g-headerNavDropdownMain_headLinkArrow"><span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span></span></span></a>
+</div>
+<div class="g-headerNavDropdownMain_contents"><div class="g-headerNavDropdownMain_column">
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item g-headerNavDropdownMain_item-sp"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/">企業情報 トップ</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/rinen/">企業理念</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/message/">社長ご挨拶</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/about/">会社概要</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/numbers/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">数字でみる</span><span class="u-flex-wrap_block">三菱電機ビルソリューションズ</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/history/">会社の歴史</a></div>
+</div>
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/group/">拠点・グループ会社</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/procurement/">資材調達</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/ms_vision/">M's Vision</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/solae/">SOLAÉ</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/ad/">広告紹介</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/corporate/fika/">広報誌Fika！</a></div>
+</div>
+</div></div>
+</div>
+</div></div>
+</div>
+</li>
+<li class="g-headerNav_listItem g-headerNavDropdown" data-js-dropdown-wrapper="">
+<a class="g-headerNav_listItemLink g-headerNavDropdown_trigger" href="https://www.mebs.co.jp/sustainability/" data-js-nav-current="sustainability" data-js-dropdown-trigger="" aria-expanded="false">
+<span class="g-headerNav_listItemLinkTitle">サステナビリティ</span>
+<span class="g-headerNav_listItemLinkIcon">
+<span class="i-area i-area12 close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span>
+<span class="i-area i-area12 open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span>
+</span>
+</a>
+<div class="g-headerNavDropdown_content" data-js-dropdown-content="" aria-hidden="true" style="display: none;">
+<div class="g-headerNavDropdown_contentInner"><div class="g-headerNavDropdown_contentBox">
+<div class="g-headerNavDropdownMain">
+<div class="g-headerNavDropdownMain_head">
+<a class="g-headerNavDropdownMain_headLink" href="https://www.mebs.co.jp/sustainability/"><span class="g-headerNavDropdownMain_headLinkInner"><span class="g-headerNavDropdownMain_headLinkText">サステナビリティ</span><span class="g-headerNavDropdownMain_headLinkArrow"><span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span></span></span></a>
+</div>
+<div class="g-headerNavDropdownMain_contents"><div class="g-headerNavDropdownMain_column">
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item g-headerNavDropdownMain_item-sp"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/sustainability/">サステナビリティ トップ</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/sustainability/social_contributions/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">人々の豊かな</span><span class="u-flex-wrap_block">暮らしのために</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/sustainability/corp_citizenship/">良き企業市民として</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/sustainability/work_environment/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">人財の活躍推進と</span><span class="u-flex-wrap_block">環境整備</span></div></a></div>
+</div>
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/sustainability/safety-campaign/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">エレベーター・</span><span class="u-flex-wrap_block">エスカレーター</span><span class="u-flex-wrap_block">安全キャンペーン</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/sustainability/gallery/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">絵画展</span><span class="u-flex-wrap_block">「口と足で表現する</span><span class="u-flex-wrap_block">世界の芸術家たち」</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/sustainability/kids/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">キッズページ&nbsp;</span><span class="u-flex-wrap_block">こども探検隊</span></div></a></div>
+</div>
+</div></div>
+</div>
+</div></div>
+</div>
+</li>
+<li class="g-headerNav_listItem">
+<a class="g-headerNav_listItemLink" href="https://www.mebs.co.jp/press/" data-js-nav-current="press">
+<span class="g-headerNav_listItemLinkTitle">ニュース</span>
+</a>
+</li>
+<li class="g-headerNav_listItem g-headerNavDropdown" data-js-dropdown-wrapper="">
+<div class="g-headerNav_listItemLink g-headerNavDropdown_trigger" data-js-nav-current="saiyou" data-js-dropdown-trigger="" aria-expanded="false">
+<span class="g-headerNav_listItemLinkTitle">採用情報</span>
+<span class="g-headerNav_listItemLinkIcon">
+<span class="i-area i-area12 close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span>
+<span class="i-area i-area12 open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span>
+</span>
+</div>
+<div class="g-headerNavDropdown_content" data-js-dropdown-content="" aria-hidden="true" style="display: none;">
+<div class="g-headerNavDropdown_contentInner"><div class="g-headerNavDropdown_contentBox">
+<div class="g-headerNavDropdownMain">
+<div class="g-headerNavDropdownMain_head"><div class="g-headerNavDropdownMain_headLink"><span class="g-headerNavDropdownMain_headLinkInner"><span class="g-headerNavDropdownMain_headLinkText">採用情報</span></span></div></div>
+<div class="g-headerNavDropdownMain_contents"><div class="g-headerNavDropdownMain_column">
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/saiyou/top.html">新卒採用</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/saiyou/career/">キャリア採用</a></div>
+</div>
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/saiyou/group/">グループ会社採用</a></div>
+</div>
+</div></div>
+</div>
+</div></div>
+</div>
+</li>
+<li class="g-headerNav_listItem g-headerNavDropdown" data-js-dropdown-wrapper="">
+<a class="g-headerNav_listItemLink g-headerNavDropdown_trigger" href="https://www.mebs.co.jp/contact/" data-js-nav-current="contact" data-js-dropdown-trigger="" aria-expanded="false">
+<span class="g-headerNav_listItemLinkTitle">お問い合わせ</span>
+<span class="g-headerNav_listItemLinkIcon">
+<span class="i-area i-area12 close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span>
+<span class="i-area i-area12 open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span>
+</span>
+</a>
+<div class="g-headerNavDropdown_content" data-js-dropdown-content="" aria-hidden="true" style="display: none;">
+<div class="g-headerNavDropdown_contentInner"><div class="g-headerNavDropdown_contentBox">
+<div class="g-headerNavDropdownMain">
+<div class="g-headerNavDropdownMain_head">
+<a class="g-headerNavDropdownMain_headLink" href="https://www.mebs.co.jp/contact/"><span class="g-headerNavDropdownMain_headLinkInner"><span class="g-headerNavDropdownMain_headLinkText">お問い合わせ</span><span class="g-headerNavDropdownMain_headLinkArrow"><span class="material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span></span></span></a>
+</div>
+<div class="g-headerNavDropdownMain_contents"><div class="g-headerNavDropdownMain_column">
+<div class="g-headerNavDropdownMain_columnBlock">
+<div class="g-headerNavDropdownMain_item g-headerNavDropdownMain_item-sp"><a class="g-headerNavDropdownMain_itemLink" href="https://www.mebs.co.jp/contact/">お問い合わせ トップ</a></div>
+<section class="g-headerNavDropdownMain_section">
+<div class="g-headerNavDropdownMain_sectionTitle"><span class="g-headerNavDropdownMain_sectionTitleIcon"><span class="material-icons-fill material-icons-fill-person">&nbsp;</span></span><span class="g-headerNavDropdownMain_sectionTitleText">導入をご検討のお客様</span></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/contact/form_products_solutions.html"><div class="u-flex-wrap"><span class="u-flex-wrap_block">製品・ソリューションに</span><span class="u-flex-wrap_block">関する</span><span class="u-flex-wrap_block">お問い合わせ</span></div></a></div>
+</section>
+<section class="g-headerNavDropdownMain_section">
+<div class="g-headerNavDropdownMain_sectionTitle"><span class="g-headerNavDropdownMain_sectionTitleIcon"><span class="material-icons-fill material-icons-fill-person">&nbsp;</span></span><span class="g-headerNavDropdownMain_sectionTitleText">ご契約のお客様</span></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/contact/form_customer.html"><div class="u-flex-wrap"><span class="u-flex-wrap_block">ご契約内容に</span><span class="u-flex-wrap_block">関する</span><span class="u-flex-wrap_block">お問い合わせ</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/contact/form_products_solutions.html"><div class="u-flex-wrap"><span class="u-flex-wrap_block">製品・ソリューションに</span><span class="u-flex-wrap_block">関する</span><span class="u-flex-wrap_block">お問い合わせ</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/corporate/group/office/infomationcenter/">情報センター</a></div>
+</section>
+<section class="g-headerNavDropdownMain_section">
+<div class="g-headerNavDropdownMain_sectionTitle"><span class="g-headerNavDropdownMain_sectionTitleIcon"><span class="material-icons-fill material-icons-fill-person">&nbsp;</span></span><span class="g-headerNavDropdownMain_sectionTitleText">三菱製品をお持ちのお客様</span></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/contact/form_products_solutions.html"><div class="u-flex-wrap"><span class="u-flex-wrap_block">製品・ソリューションに</span><span class="u-flex-wrap_block">関する</span><span class="u-flex-wrap_block">お問い合わせ</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/contact/callcenter/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">冷熱サービス</span><span class="u-flex-wrap_block">コールセンター</span><span class="u-flex-wrap_block">（故障・修理受付窓口）</span></div></a></div>
+</section>
+</div>
+<div class="g-headerNavDropdownMain_columnBlock">
+<section class="g-headerNavDropdownMain_section">
+<div class="g-headerNavDropdownMain_sectionTitle"><span class="g-headerNavDropdownMain_sectionTitleIcon"><span class="material-icons-fill material-icons-fill-download">&nbsp;</span></span><span class="g-headerNavDropdownMain_sectionTitleText">資料・ソフトウェアのダウンロード</span></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/catalog/">資料ダウンロード</a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/contact/software_01_input.html">ソフトウェアダウンロード</a></div>
+</section>
+<section class="g-headerNavDropdownMain_section">
+<div class="g-headerNavDropdownMain_sectionTitle"><span class="g-headerNavDropdownMain_sectionTitleIcon"><span class="material-icons-outlined material-icons-outlined-help-outline">&nbsp;</span></span><span class="g-headerNavDropdownMain_sectionTitleText">その他お問い合わせ</span></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/contact/form_others.html"><div class="u-flex-wrap"><span class="u-flex-wrap_block">その他の</span><span class="u-flex-wrap_block">お問い合わせ</span></div></a></div>
+<div class="g-headerNavDropdownMain_item"><a class="g-headerNavDropdownMain_itemLink g-headerNavDropdownMain_itemLink-sectionInner" href="https://www.mebs.co.jp/corporate/group/office/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">お電話でのお問い合わせを</span><span class="u-flex-wrap_block">ご希望のお客様</span></div></a></div>
+</section>
+</div>
+</div></div>
+</div>
+</div></div>
+</div>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+
+    <slot />
+
+    <footer class="g-footer" role="contentinfo">
+<div class="g-footerNav">
+<div class="g-footer_inner">
+<div class="g-footerNav_main" data-js-accordion="">
+<div class="g-footerNav_column">
+<div class="g-footerNav_block c-accordion" data-js-accordion-wrapper="">
+<div class="g-footerNav_parent c-accordion_title">
+<a class="g-footerNav_parentLink g-footerNav_parentLink-spNone" href="https://www.mebs.co.jp/about/">私たちの目指す姿</a>
+<button type="button" class="g-footerNav_parentButton c-accordion-open" data-js-accordion-trigger="" aria-expanded="true">
+<span class="g-footerNav_parentButtonText">私たちの目指す姿</span>
+<span class="g-footerNav_parentButtonIcon"><span class="c-accordion_titleIcon"><span class="i-area i-area12 is-close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span><span class="i-area i-area12 is-open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span></span></span>
+</button>
+</div>
+<ul class="g-footerNav_list c-accordion_content" data-js-accordion-content="" aria-hidden="false" style="display: block; height: auto;">
+<li class="g-footerNav_listItem g-footerNav_listItem-sp"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/about/">私たちの目指す姿 トップ</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/about/issue/">私たちが向き合う課題</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/about/business/">つくる、みまもる、進化させる</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/about/integrated-solutions/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">三菱電機グループの</span><span class="u-flex-wrap_block">総合力を</span><span class="u-flex-wrap_block">活かした</span><span class="u-flex-wrap_block">ソリューション</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/about/safety/">安全・安心・快適の追求</a></li>
+</ul>
+</div>
+</div>
+<div class="g-footerNav_column">
+<div class="g-footerNav_block c-accordion" data-js-accordion-wrapper="">
+<div class="g-footerNav_parent c-accordion_title">
+<a class="g-footerNav_parentLink g-footerNav_parentLink-spNone" href="https://www.mebs.co.jp/elevator/">製品・ソリューション</a>
+<button type="button" class="g-footerNav_parentButton c-accordion-open" data-js-accordion-trigger="" aria-expanded="true">
+<span class="g-footerNav_parentButtonText">製品・ソリューション</span>
+<span class="g-footerNav_parentButtonIcon"><span class="c-accordion_titleIcon"><span class="i-area i-area12 is-close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span><span class="i-area i-area12 is-open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span></span></span>
+</button>
+</div>
+<ul class="g-footerNav_list c-accordion_content" data-js-accordion-content="" aria-hidden="false" style="display: block; height: auto;">
+<li class="g-footerNav_listItem g-footerNav_listItem-sp"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/elevator/">製品・ソリューション トップ</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/smartcity-buildsolution/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">スマートシティ・</span><span class="u-flex-wrap_block">ビルソリューション</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/elevator/">エレベーター</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/escalator/">エスカレーター</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/refri-aircon-ventilation/">空調・冷熱・換気</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/building/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">ビルマネジメント</span><span class="u-flex-wrap_block">システム</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/other/">その他ソリューション</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/purposes/">目的・ニーズから探す</a></li>
+</ul>
+</div>
+<div class="g-footerNav_block c-accordion">
+<div class="g-footerNav_parent c-accordion_title">
+<a class="g-footerNav_parentLink" href="https://www.mebs.co.jp/cases/">導入事例</a>
+</div>
+</div>
+</div>
+<div class="g-footerNav_column">
+<div class="g-footerNav_block c-accordion" data-js-accordion-wrapper="">
+<div class="g-footerNav_parent c-accordion_title">
+<a class="g-footerNav_parentLink g-footerNav_parentLink-spNone" href="https://www.mebs.co.jp/corporate/">企業情報</a>
+<button type="button" class="g-footerNav_parentButton c-accordion-open" data-js-accordion-trigger="" aria-expanded="true">
+<span class="g-footerNav_parentButtonText">企業情報</span>
+<span class="g-footerNav_parentButtonIcon"><span class="c-accordion_titleIcon"><span class="i-area i-area12 is-close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span><span class="i-area i-area12 is-open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span></span></span>
+</button>
+</div>
+<ul class="g-footerNav_list c-accordion_content" data-js-accordion-content="" aria-hidden="false" style="display: block; height: auto;">
+<li class="g-footerNav_listItem g-footerNav_listItem-sp"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/">企業情報 トップ</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/rinen/">企業理念</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/message/">社長ご挨拶</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/about/">会社概要</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/numbers/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">数字でみる</span><span class="u-flex-wrap_block">三菱電機ビルソリューションズ</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/history/">会社の歴史</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/group/">拠点・グループ会社</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/procurement/">資材調達</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/ms_vision/">M's Vision</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/solae/">SOLAÉ</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/ad/">広告紹介</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/corporate/fika/">広報誌Fika！</a></li>
+</ul>
+</div>
+</div>
+<div class="g-footerNav_column">
+<div class="g-footerNav_block c-accordion" data-js-accordion-wrapper="">
+<div class="g-footerNav_parent c-accordion_title">
+<a class="g-footerNav_parentLink g-footerNav_parentLink-spNone" href="https://www.mebs.co.jp/sustainability/">サステナビリティ</a>
+<button type="button" class="g-footerNav_parentButton c-accordion-open" data-js-accordion-trigger="" aria-expanded="true">
+<span class="g-footerNav_parentButtonText">サステナビリティ</span>
+<span class="g-footerNav_parentButtonIcon"><span class="c-accordion_titleIcon"><span class="i-area i-area12 is-close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span><span class="i-area i-area12 is-open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span></span></span>
+</button>
+</div>
+<ul class="g-footerNav_list c-accordion_content" data-js-accordion-content="" aria-hidden="false" style="display: block; height: auto;">
+<li class="g-footerNav_listItem g-footerNav_listItem-sp"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/sustainability/">サステナビリティ トップ</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/sustainability/social_contributions/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">人々の豊かな</span><span class="u-flex-wrap_block">暮らしのために</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/sustainability/corp_citizenship/">良き企業市民として</a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/sustainability/work_environment/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">人財の活躍推進と</span><span class="u-flex-wrap_block">環境整備</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/sustainability/safety-campaign/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">エレベーター・</span><span class="u-flex-wrap_block">エスカレーター</span><span class="u-flex-wrap_block">安全キャンペーン</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/sustainability/gallery/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">絵画展</span><span class="u-flex-wrap_block">「口と足で</span><span class="u-flex-wrap_block">表現する</span><span class="u-flex-wrap_block">世界の</span><span class="u-flex-wrap_block">芸術家たち」</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/sustainability/kids/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">キッズページ&nbsp;</span><span class="u-flex-wrap_block">こども探検隊</span></div></a></li>
+</ul>
+</div>
+<div class="g-footerNav_block c-accordion" data-js-accordion-wrapper="">
+<div class="g-footerNav_parent c-accordion_title">
+<div class="g-footerNav_parentLink g-footerNav_parentLink-noLink g-footerNav_parentLink-spNone">採用情報</div>
+<button type="button" class="g-footerNav_parentButton c-accordion-open" data-js-accordion-trigger="" aria-expanded="true">
+<span class="g-footerNav_parentButtonText">採用情報</span>
+<span class="g-footerNav_parentButtonIcon"><span class="c-accordion_titleIcon"><span class="i-area i-area12 is-close"><span class="material-icons-outlined material-icons-outlined-add">&nbsp;</span></span><span class="i-area i-area12 is-open"><span class="material-icons-outlined material-icons-outlined-close">&nbsp;</span></span></span></span>
+</button>
+</div>
+<ul class="g-footerNav_list c-accordion_content" data-js-accordion-content="" aria-hidden="false" style="display: block; height: auto;">
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/saiyou/top.html"><div class="u-flex-wrap"><span class="u-flex-wrap_block">新卒採用</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/saiyou/career/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">キャリア採用</span></div></a></li>
+<li class="g-footerNav_listItem"><a class="g-footerNav_listItemLink" href="https://www.mebs.co.jp/saiyou/group/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">グループ会社採用</span></div></a></li>
+</ul>
+</div>
+</div>
+<div class="g-footerNav_column g-footerNav_column-last">
+<div class="g-footerNav_block g-footerNav_block-nochild"><div class="g-footerNav_parent"><a class="g-footerNav_parentLink g-footerNav_parentLink-fsSmall" href="https://www.mebs.co.jp/press/">ニュース</a></div></div>
+<div class="g-footerNav_block g-footerNav_block-nochild"><div class="g-footerNav_parent"><a class="g-footerNav_parentLink g-footerNav_parentLink-fsSmall" href="https://www.mebs.co.jp/contact/">お問い合わせ</a></div></div>
+<div class="g-footerNav_block g-footerNav_block-nochild"><div class="g-footerNav_parent"><a class="g-footerNav_parentLink g-footerNav_parentLink-fsSmall" href="https://www.mebs.co.jp/useful/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">ビルソリューション</span><span class="u-flex-wrap_block">ジャーナル</span></div></a></div></div>
+<div class="g-footerNav_block g-footerNav_block-nochild"><div class="g-footerNav_parent"><a class="g-footerNav_parentLink g-footerNav_parentLink-fsSmall" href="https://www.mebs.co.jp/seminars/">セミナー・イベント</a></div></div>
+<div class="g-footerNav_block g-footerNav_block-nochild"><div class="g-footerNav_parent"><a class="g-footerNav_parentLink g-footerNav_parentLink-fsSmall" href="https://www.mebs.co.jp/forcustomer/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">お取引のある</span><span class="u-flex-wrap_block">お客様へ</span></div></a></div></div>
+<div class="g-footerNav_block g-footerNav_block-nochild"><div class="g-footerNav_parent"><a class="g-footerNav_parentLink g-footerNav_parentLink-fsSmall" href="https://www.mebs.co.jp/owners/"><div class="u-flex-wrap"><span class="u-flex-wrap_block">施設管理者・</span><span class="u-flex-wrap_block">オーナーの皆様へ</span></div></a></div></div>
+<div class="g-footerNav_block g-footerNav_block-nochild g-footerNav_block-sns">
+<div class="g-footerNav_sns">
+<a class="g-footerNav_snsIcon" href="https://x.com/MEBS_JP_journal" target="_blank"><img src="https://www.mebs.co.jp/assets/img/icons/dark/ic_sns_x.svg" alt="X" width="32" height="32"></a>
+<a class="g-footerNav_snsIcon" href="https://www.youtube.com/channel/UCv78hygjwQ-MLqTriKQ32gA" target="_blank"><img src="https://www.mebs.co.jp/assets/img/icons/dark/ic_sns_youtube.svg" alt="youtube" width="32" height="32"></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="g-footer_separator">
+<div class="g-footer_inner">
+<div class="g-footerSubNav">
+<ul class="g-footerSubNav_list">
+<li class="g-footerSubNav_listItem"><a class="g-footerSubNav_listItemLink" href="https://www.mitsubishielectric.co.jp/index.html" target="_blank">三菱電機</a></li>
+<li class="g-footerSubNav_listItem"><a class="g-footerSubNav_listItemLink" href="https://www.mebs.co.jp/copy-right/">ウェブサイト利用規約</a></li>
+<li class="g-footerSubNav_listItem"><a class="g-footerSubNav_listItemLink" href="https://www.mebs.co.jp/privacy/">個人情報保護について</a></li>
+<li class="g-footerSubNav_listItem"><a class="g-footerSubNav_listItemLink" href="https://www.mebs.co.jp/sitemap/">サイトマップ</a></li>
+</ul>
+</div>
+<div class="g-footer_copyright">
+<small class="g-footer_copyrightText">© MITSUBISHI ELECTRIC BUILDING SOLUTIONS CORPORATION</small>
+</div>
+</div>
+</div>
+</footer>
+
+  </div>
+
+  <script is:inline src={`${ASSET_BASE}/assets/js/nav.js`}></script>
+  <script is:inline src={`${ASSET_BASE}/assets/js/main.js`}></script>
+</body>
+</html>

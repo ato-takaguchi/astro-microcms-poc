@@ -1,0 +1,40 @@
+---
+const { item } = Astro.props;
+const alt = item.thumbnailAlt || item.title;
+const fileUrl = item.fileUrl ?? '';
+const thumbUrl = item.thumbnail?.url ?? '';
+const productUrl = item.productUrl ?? '';
+---
+
+<article class="l-fourColumn_item c-catalogCard">
+  <figure class="c-catalogCard_image">
+    <a class="c-catalogCard_imageLink" href={fileUrl} target="_blank">
+      <img src={thumbUrl} alt={alt} width="146" height="200" loading="lazy" />
+    </a>
+  </figure>
+
+  <div class="c-catalogCard_contents">
+    <div class="c-catalogCard_text">
+      <p set:html={item.title}></p>
+    </div>
+    {productUrl && (
+      <div class="c-catalogCard_link">
+        <a class="c-linkArrow c-linkArrow-fsSmall" href={productUrl}>
+          <span class="c-linkArrow_text">製品ページ</span>
+          <span class="c-linkArrow_arrow material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
+        </a>
+      </div>
+    )}
+  </div>
+
+  <div class="c-catalogCard_button">
+    <a
+      class="c-btn c-btn-width100 c-btn-sp-small c-btn-secondary"
+      href={fileUrl}
+      target="_blank"
+    >
+      <span class="c-btn_text">ダウンロード</span>
+      <span class="c-btn_arrow c-btn_arrow-mlThin material-icons-outlined material-icons-outlined-arrow-forward">&nbsp;</span>
+    </a>
+  </div>
+</article>
